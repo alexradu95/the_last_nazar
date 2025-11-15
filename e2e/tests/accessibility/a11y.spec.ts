@@ -3,8 +3,8 @@ import AxeBuilder from '@axe-core/playwright';
 
 test.describe('Accessibility Tests', () => {
   const pages = [
-    { name: 'Login Page', url: '/auth/login', requiresAuth: false },
-    { name: 'Register Page', url: '/auth/register', requiresAuth: false },
+    { name: 'Login Page', url: '/login', requiresAuth: false },
+    { name: 'Register Page', url: '/register', requiresAuth: false },
     { name: 'Dashboard', url: '/dashboard', requiresAuth: true },
   ];
 
@@ -80,7 +80,7 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('should have accessible form labels', async ({ page }) => {
-    await page.goto('/auth/login');
+    await page.goto('/login');
 
     // All inputs should have labels
     const inputs = await page.locator('input').all();
@@ -113,7 +113,7 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('should have focus indicators', async ({ page }) => {
-    await page.goto('/auth/login');
+    await page.goto('/login');
 
     // Focus on first input
     const firstInput = page.locator('input').first();

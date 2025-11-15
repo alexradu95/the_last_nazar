@@ -6,11 +6,16 @@
  */
 
 import { chromium, FullConfig } from '@playwright/test';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import { initializeDatabase, closeDatabase } from '../src/core/database';
 import { users } from '../src/features/user/schema';
 import { credentials } from '../src/features/auth/schema';
 import { hashPassword } from '../src/features/auth/utils/password';
 import { eq } from 'drizzle-orm';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const TEST_USER = {
   id: 'test-user-e2e',
@@ -52,9 +57,14 @@ async function globalSetup(config: FullConfig) {
 
 async function seedTestUser() {
   try {
+    // Always use local SQLite for E2E tests (ignore DATABASE_URL)
+    const dbPath = join(__dirname, '..', 'dev.db');
+
+    console.log(`[Global Setup] Using database at: ${dbPath}`);
+
     // Initialize database connection
     const db = initializeDatabase({
-      url: process.env.DATABASE_URL || './dev.db',
+      url: dbPath,
       verbose: false,
     });
 

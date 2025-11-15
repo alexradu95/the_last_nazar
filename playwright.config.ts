@@ -19,6 +19,12 @@ export default defineConfig({
   /* Opt out of parallel tests on CI */
   workers: process.env.CI ? 1 : undefined,
 
+  /* Global setup - runs once before all tests */
+  globalSetup: './e2e/global-setup.ts',
+
+  /* Global teardown - runs once after all tests */
+  globalTeardown: './e2e/global-teardown.ts',
+
   /* Reporter to use */
   reporter: [
     ['html', { outputFolder: 'playwright-report' }],

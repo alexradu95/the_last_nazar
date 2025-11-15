@@ -5,11 +5,16 @@
  * This script is idempotent - it can be run multiple times without errors.
  */
 
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import { initializeDatabase, closeDatabase } from '../src/core/database';
 import { users } from '../src/features/user/schema';
 import { credentials } from '../src/features/auth/schema';
 import { hashPassword } from '../src/features/auth/utils/password';
 import { eq } from 'drizzle-orm';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const TEST_USER = {
   id: 'test-user-e2e',
@@ -22,9 +27,14 @@ async function seedTestUser() {
   try {
     console.log('[Seed] Starting test user seeding...');
 
+    // Always use local SQLite for seeding (one level up from scripts directory)
+    const dbPath = join(__dirname, '..', 'dev.db');
+
+    console.log('[Seed] Using database at:', dbPath);
+
     // Initialize database connection
     const db = initializeDatabase({
-      url: process.env.DATABASE_URL || './dev.db',
+      url: dbPath,
       verbose: false,
     });
 
@@ -74,8 +84,10 @@ async function seedTestUser() {
   }
 }
 
-// Run if called directly
-if (require.main === module) {
+// Run if called directly (ES module check)
+const isMainModule = import.meta.url === `file://${process.argv[1].replace(/\\/g, '/')}`;
+
+if (isMainModule) {
   seedTestUser().catch((error) => {
     console.error('[Seed] Fatal error:', error);
     process.exit(1);

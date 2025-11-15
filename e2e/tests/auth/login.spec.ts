@@ -9,7 +9,7 @@ test.describe('Authentication', () => {
   test('should load login page successfully', async ({ authPage, page }) => {
     await authPage.goToLogin();
 
-    await expect(page).toHaveURL(/\/auth\/login/);
+    await expect(page).toHaveURL(/\/login/);
     await expect(page.getByLabel('Email')).toBeVisible();
     await expect(page.getByLabel('Password')).toBeVisible();
   });
@@ -39,7 +39,7 @@ test.describe('Authentication', () => {
 
     // Should show validation errors or not submit
     const url = page.url();
-    expect(url).toContain('/auth/login');
+    expect(url).toContain('/login');
   });
 
   test('should logout successfully', async ({ authPage }) => {
@@ -74,7 +74,7 @@ test.describe('Authentication', () => {
     const registerLink = page.getByRole('link', { name: /register|sign up/i });
     if (await registerLink.count() > 0) {
       await registerLink.click();
-      await expect(page).toHaveURL(/\/auth\/register/);
+      await expect(page).toHaveURL(/\/register/);
     }
   });
 });

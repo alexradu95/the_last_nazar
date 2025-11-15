@@ -6,11 +6,16 @@
  */
 
 import { FullConfig } from '@playwright/test';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import { initializeDatabase, closeDatabase } from '../src/core/database';
 import { users } from '../src/features/user/schema';
 import { credentials } from '../src/features/auth/schema';
 import { sessions } from '../src/features/auth/schema';
 import { eq } from 'drizzle-orm';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const TEST_USER_EMAIL = 'test@example.com';
 
@@ -31,9 +36,14 @@ async function globalTeardown(config: FullConfig) {
 
 async function cleanupTestUser() {
   try {
+    // Always use local SQLite for E2E tests (ignore DATABASE_URL)
+    const dbPath = join(__dirname, '..', 'dev.db');
+
+    console.log(`[Global Teardown] Using database at: ${dbPath}`);
+
     // Initialize database connection
     const db = initializeDatabase({
-      url: process.env.DATABASE_URL || './dev.db',
+      url: dbPath,
       verbose: false,
     });
 

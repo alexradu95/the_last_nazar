@@ -2,6 +2,7 @@ import { test as base } from '@playwright/test';
 import { AuthPage } from '../pages/auth.page';
 import { TasksPage } from '../pages/tasks.page';
 import { GamificationPage } from '../pages/gamification.page';
+import { JournalPage } from '../pages/journal.page';
 
 /**
  * Extended test fixtures with page objects
@@ -10,6 +11,7 @@ type PageFixtures = {
   authPage: AuthPage;
   tasksPage: TasksPage;
   gamificationPage: GamificationPage;
+  journalPage: JournalPage;
 };
 
 /**
@@ -66,6 +68,11 @@ export const test = base.extend<PageFixtures>({
   gamificationPage: async ({ page }, use) => {
     const gamificationPage = new GamificationPage(page);
     await use(gamificationPage);
+  },
+
+  journalPage: async ({ page }, use) => {
+    const journalPage = new JournalPage(page);
+    await use(journalPage);
   },
 });
 

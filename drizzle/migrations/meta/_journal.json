@@ -15,6 +15,13 @@
       "when": 1763196978000,
       "tag": "0001_rainy_dreadnoughts",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1763226489186,
+      "tag": "0002_demonic_kat_farrell",
+      "breakpoints": true
     }
   ]
 }
