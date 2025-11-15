@@ -1,0 +1,7 @@
+/**
+ * useAuth hook
+ *
+ * Re-exports the useAuth hook from AuthContext for convenience.
+ */
+
+export { useAuth } from '../context/AuthContext';
