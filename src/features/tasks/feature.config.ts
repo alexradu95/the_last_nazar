@@ -25,11 +25,23 @@ export const TaskFeature: FeatureDefinition = {
         path: '/api/tasks',
         handler: () => import('./api/route'),
       },
+      {
+        path: '/api/tasks/complete',
+        handler: () => import('./api/complete/route'),
+      },
+      {
+        path: '/api/tasks/stats',
+        handler: () => import('./api/stats/route'),
+      },
+      {
+        path: '/api/tasks/categories',
+        handler: () => import('./api/categories/route'),
+      },
     ],
 
     events: {
       emits: ['task.created', 'task.completed', 'task.updated', 'task.deleted'],
-      listens: ['user.login', 'xp.awarded'],
+      listens: ['user.login'],
     },
 
     services: {
@@ -37,8 +49,12 @@ export const TaskFeature: FeatureDefinition = {
     },
 
     components: {
-      TaskCard: () => import('./components/TaskCard'),
+      TasksPage: () => import('./components/TasksPage'),
       TaskList: () => import('./components/TaskList'),
+      TaskItem: () => import('./components/TaskItem'),
+      TaskFilters: () => import('./components/TaskFilters'),
+      TaskStats: () => import('./components/TaskStats'),
+      CreateTaskModal: () => import('./components/CreateTaskModal'),
     },
 
     tables: ['feature_tasks', 'feature_task_categories'],
@@ -48,22 +64,43 @@ export const TaskFeature: FeatureDefinition = {
   async initialize({ eventBus, registry, db }) {
     console.log('[Tasks] Initializing feature...');
 
-    // TODO: Setup event listeners
-    // eventBus.on('user.login', handleUserLogin);
+    // Import task service for event handlers
+    const { createTaskService } = await import('./services/task-service');
+    const taskService = createTaskService(db, eventBus);
 
-    // TODO: Register services
-    // const taskService = await registry.getService('tasks', 'task-service');
+    // Setup event listeners
+    eventBus.on('user.login', async (payload: any) => {
+      console.log(`[Tasks] User logged in: ${payload.userId}`);
+      // Load user's active tasks
+      const activeTasks = await taskService.findByUserId(payload.userId, {
+        status: 'active',
+      });
+      console.log(`[Tasks] User has ${activeTasks.length} active tasks`);
 
-    // TODO: Run migrations
-    // await db.migrate('./schema');
+      // Check for overdue tasks
+      const overdueTasks = await taskService.getOverdueTasks(payload.userId);
+      if (overdueTasks.length > 0) {
+        console.log(`[Tasks] User has ${overdueTasks.length} overdue tasks`);
+      }
+    });
 
-    console.log('[Tasks] Feature initialized');
+    // Log task completion events for debugging
+    eventBus.on('task.completed', async (payload: any) => {
+      console.log(
+        `[Tasks] Task ${payload.taskId} completed! Awarded ${payload.xpReward} XP`
+      );
+    });
+
+    console.log('[Tasks] Feature initialized successfully');
+    console.log('[Tasks] Listening to: user.login');
+    console.log('[Tasks] Emitting: task.created, task.completed, task.updated, task.deleted');
   },
 
   // Cleanup when disabled
   async cleanup({ eventBus }) {
     console.log('[Tasks] Cleaning up feature...');
-    // TODO: Remove event listeners
+    // Event listeners are automatically cleaned up by the event bus
+    console.log('[Tasks] Feature cleanup complete');
   },
 };
 
