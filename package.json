@@ -20,7 +20,7 @@
     "precommit": "npm run type-check && npm run validate-features"
   },
   "dependencies": {
-    "animejs": "^4.2.2",
+    "animejs": "^3.2.2",
     "bcryptjs": "^3.0.3",
     "canvas-confetti": "^1.9.4",
     "next": "16.0.3",

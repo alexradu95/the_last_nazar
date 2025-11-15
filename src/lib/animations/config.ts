@@ -4,9 +4,6 @@
  * Centralized configuration for all animations using Anime.js
  */
 
-// @ts-ignore - animejs types are incomplete
-import { animate } from 'animejs';
-
 export const ANIMATION_CONFIG = {
   duration: {
     instant: 150,
@@ -33,5 +30,42 @@ export const defaultAnimation = {
   easing: ANIMATION_CONFIG.easing.default,
 };
 
-// Export as 'anime' for compatibility with existing code
-export { animate as anime };
+// Lazy-load anime only on client side to avoid SSR issues
+let animeInstance: any = null;
+
+const getAnime = () => {
+  if (typeof window === 'undefined') {
+    console.warn('[Anime] Attempted to use animations on server - skipping');
+    // Return a mock object with common anime methods
+    return {
+      timeline: () => ({
+        add: () => ({ add: () => ({}) }),
+      }),
+      remove: () => {},
+      finished: Promise.resolve(),
+    };
+  }
+
+  if (!animeInstance) {
+    // Dynamically import anime only when first needed (v3 uses default export)
+    // @ts-ignore - animejs types are incomplete
+    animeInstance = require('animejs').default || require('animejs');
+  }
+
+  return animeInstance;
+};
+
+// Export a proxy that lazy-loads anime and supports both function calls and method access
+export const anime = new Proxy(
+  (() => {}) as any,
+  {
+    apply(_target, _thisArg, args) {
+      const animeLib = getAnime();
+      return animeLib(...args);
+    },
+    get(_target, prop) {
+      const animeLib = getAnime();
+      return animeLib[prop];
+    },
+  }
+);
