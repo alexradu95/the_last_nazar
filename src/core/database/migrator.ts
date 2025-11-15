@@ -84,8 +84,3 @@ export async function runMigrations(db?: BetterSQLite3Database): Promise<void> {
   const migrator = new DatabaseMigrator(db);
   await migrator.runMigrations();
 }
-
-/**
- * Export migrator instance
- */
-export const migrator = new DatabaseMigrator();

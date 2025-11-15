@@ -4,6 +4,14 @@
  * Central export point for all core systems.
  */
 
+// Import for local use in initializeCore
+import { initializeDatabase, getDatabase, closeDatabase, isDatabaseConnected, getDatabaseStats } from './database';
+import { runMigrations } from './database/migrator';
+import { eventBus } from './event-bus';
+import { FeatureRegistry } from './feature-registry';
+import { initializePluginSystem } from './plugin-loader';
+import { initializeAIService } from './ai';
+
 // Event Bus
 export { EventBus, eventBus } from './event-bus';
 export type * from './event-bus';
@@ -24,7 +32,7 @@ export {
   isDatabaseConnected,
   getDatabaseStats,
 } from './database';
-export { DatabaseMigrator, migrator, runMigrations } from './database/migrator';
+export { DatabaseMigrator, runMigrations } from './database/migrator';
 export { SchemaAggregator, schemaAggregator } from './database/schema-aggregator';
 
 // AI Services
@@ -69,8 +77,8 @@ export async function initializeCore(config?: {
   // 4. Initialize Feature Registry
   const registry = new FeatureRegistry(eventBus, db);
 
-  // 5. Initialize Plugin Loader and load features
-  const pluginLoader = await initializePluginSystem(registry);
+  // 5. Plugin loader - SKIP for now (import.meta.glob doesn't work in Next.js/Turbopack)
+  console.log('[Core] Skipping plugin loader (Next.js compatibility - features are imported directly)');
 
   console.log('[Core] System initialized successfully');
 
@@ -78,7 +86,7 @@ export async function initializeCore(config?: {
     db,
     eventBus,
     registry,
-    pluginLoader,
+    pluginLoader: null,
     aiService,
   };
 }

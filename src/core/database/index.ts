@@ -56,12 +56,18 @@ export function initializeDatabase(config: DatabaseConfig): BetterSQLite3Databas
 
 /**
  * Get database instance
+ * Auto-initializes if not already initialized
  */
 export function getDatabase(): BetterSQLite3Database {
   if (!db) {
-    throw new Error('Database not initialized. Call initializeDatabase() first.');
+    // Auto-initialize with default config
+    console.log('[Database] Auto-initializing with default config');
+    initializeDatabase({
+      url: process.env.DATABASE_URL || './dev.db',
+      verbose: process.env.NODE_ENV === 'development',
+    });
   }
-  return db;
+  return db!;
 }
 
 /**

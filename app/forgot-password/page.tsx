@@ -5,7 +5,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ForgotPasswordForm } from '@/src/features/auth/components';
+import { ForgotPasswordForm } from '@/features/auth/components';
 
 export default function ForgotPasswordPage() {
   const router = useRouter();

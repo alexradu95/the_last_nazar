@@ -5,7 +5,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { RegisterForm } from '@/src/features/auth/components';
+import { RegisterForm } from '@/features/auth/components';
 
 export default function RegisterPage() {
   const router = useRouter();

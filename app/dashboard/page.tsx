@@ -5,7 +5,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/src/features/auth/hooks/useAuth';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useEffect } from 'react';
 
 export default function DashboardPage() {

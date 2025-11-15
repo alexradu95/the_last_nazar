@@ -5,7 +5,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { ResetPasswordForm } from '@/src/features/auth/components';
+import { ResetPasswordForm } from '@/features/auth/components';
 import { Suspense } from 'react';
 
 function ResetPasswordContent() {
