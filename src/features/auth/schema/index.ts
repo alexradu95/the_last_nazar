@@ -6,7 +6,7 @@
 
 import { sqliteTable, text, integer, index, uniqueIndex } from 'drizzle-orm/sqlite-core';
 import { relations } from 'drizzle-orm';
-import { users } from '@/features/user/schema';
+import { users } from '../../user/schema';
 
 /**
  * Sessions table - stores active user sessions
