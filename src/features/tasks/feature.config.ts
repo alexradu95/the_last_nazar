@@ -16,27 +16,18 @@ export const TaskFeature: FeatureDefinition = {
 
   // What this feature provides
   provides: {
+    // Routes would be defined in src/app/ directory (Next.js App Router)
+    // Listed here for documentation/feature discovery only
+    // Note: These routes are NOT yet implemented in src/app/
     routes: [
-      {
-        path: '/tasks',
-        component: () => import('./components/TasksPage'),
-      },
-      {
-        path: '/api/tasks',
-        handler: () => import('./api/route'),
-      },
-      {
-        path: '/api/tasks/complete',
-        handler: () => import('./api/complete/route'),
-      },
-      {
-        path: '/api/tasks/stats',
-        handler: () => import('./api/stats/route'),
-      },
-      {
-        path: '/api/tasks/categories',
-        handler: () => import('./api/categories/route'),
-      },
+      // UI Routes (to be created in src/app/tasks/)
+      '/tasks',
+
+      // API Routes (to be created in src/app/api/tasks/)
+      '/api/tasks',
+      '/api/tasks/complete',
+      '/api/tasks/stats',
+      '/api/tasks/categories',
     ],
 
     events: {

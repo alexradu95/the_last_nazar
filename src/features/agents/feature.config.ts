@@ -11,9 +11,20 @@ export const AgentsFeature: FeatureDefinition = {
   dependencies: [],
 
   provides: {
+    // Routes are defined in src/app/ directory (Next.js App Router)
+    // Listed here for documentation/feature discovery only
     routes: [
-      { path: '/agents', component: () => import('./components/AgentSelector') },
-      { path: '/agents/:agentId', component: () => import('./components/AgentChat') },
+      // UI Routes (actual files in src/app/agents/)
+      '/agents',
+      '/agents/[agentId]',
+
+      // API Routes (actual files in src/app/api/agents/)
+      '/api/agents/chat',
+      '/api/agents/conversations',
+      '/api/agents/messages',
+      '/api/agents/suggestions',
+      '/api/agents/suggestions/[id]/dismiss',
+      '/api/agents/insights',
     ],
 
     events: {

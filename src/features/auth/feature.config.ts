@@ -13,22 +13,24 @@ export const AuthFeature: FeatureDefinition = {
   dependencies: ['user'],
 
   provides: {
+    // Routes are defined in src/app/ directory (Next.js App Router)
+    // Listed here for documentation/feature discovery only
     routes: [
-      // API Routes
-      { path: '/api/auth/register', handler: () => import('./api/register/route') },
-      { path: '/api/auth/login', handler: () => import('./api/login/route') },
-      { path: '/api/auth/logout', handler: () => import('./api/logout/route') },
-      { path: '/api/auth/me', handler: () => import('./api/me/route') },
-      { path: '/api/auth/forgot-password', handler: () => import('./api/forgot-password/route') },
-      { path: '/api/auth/reset-password', handler: () => import('./api/reset-password/route') },
-      { path: '/api/auth/change-password', handler: () => import('./api/change-password/route') },
-      { path: '/api/auth/verify-email', handler: () => import('./api/verify-email/route') },
+      // API Routes (actual files in src/app/api/auth/)
+      '/api/auth/register',
+      '/api/auth/login',
+      '/api/auth/logout',
+      '/api/auth/me',
+      '/api/auth/forgot-password',
+      '/api/auth/reset-password',
+      '/api/auth/change-password',
+      '/api/auth/verify-email',
 
-      // UI Routes (for reference - actual routing handled by app directory)
-      // { path: '/login', component: () => import('./components/LoginForm') },
-      // { path: '/register', component: () => import('./components/RegisterForm') },
-      // { path: '/forgot-password', component: () => import('./components/ForgotPasswordForm') },
-      // { path: '/reset-password', component: () => import('./components/ResetPasswordForm') },
+      // UI Routes (actual files in src/app/)
+      '/login',
+      '/register',
+      '/forgot-password',
+      '/reset-password',
     ],
 
     events: {

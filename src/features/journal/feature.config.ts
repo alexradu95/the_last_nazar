@@ -11,9 +11,12 @@ export const JournalFeature: FeatureDefinition = {
   dependencies: ['agents'],
 
   provides: {
+    // Routes would be defined in src/app/ directory (Next.js App Router)
+    // Listed here for documentation/feature discovery only
+    // Note: These routes are NOT yet implemented in src/app/
     routes: [
-      { path: '/journal', component: () => import('./components/JournalPage') },
-      { path: '/api/journal', handler: () => import('./api/route') },
+            '/journal',
+            '/api/journal',
     ],
     events: {
       emits: ['journal.created', 'journal.updated', 'mood.logged'],

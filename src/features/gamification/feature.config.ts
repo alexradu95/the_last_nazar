@@ -20,6 +20,9 @@ export const GamificationFeature: FeatureDefinition = {
   dependencies: [],
 
   provides: {
+    // Routes would be defined in src/app/ directory (Next.js App Router)
+    // Listed here for documentation/feature discovery only
+    // Note: These routes are NOT yet implemented in src/app/
     routes: [
       {
         path: '/api/gamification/stats',

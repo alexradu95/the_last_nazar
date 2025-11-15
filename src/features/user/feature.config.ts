@@ -14,8 +14,8 @@ export const UserFeature: FeatureDefinition = {
 
   provides: {
     routes: [
-      { path: '/settings', component: () => import('./components/SettingsPage') },
-      { path: '/api/users', handler: () => import('./api/route') },
+            '/settings',
+            '/api/users',
       { path: '/api/users/:id', handler: () => import('./api/[id]/route') },
       {
         path: '/api/users/:id/preferences',
