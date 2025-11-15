@@ -131,6 +131,13 @@ export default function HomePage() {
             title="Real-time Validation"
             description="Live password strength indicator and instant input validation feedback."
           />
+          <Link href="/animations-demo" className="block">
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow border-2 border-purple-200">
+              <div className="text-4xl mb-4">🎨</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Animation System</h3>
+              <p className="text-gray-600">Comprehensive animation library with Anime.js, including gamification effects and accessibility support.</p>
+            </div>
+          </Link>
         </div>
 
         {/* Tech Stack */}
@@ -156,6 +163,7 @@ export default function HomePage() {
             <Link href="/register" className="text-blue-600 hover:underline">Register</Link>
             <Link href="/forgot-password" className="text-blue-600 hover:underline">Forgot Password</Link>
             <Link href="/dashboard" className="text-blue-600 hover:underline">Dashboard</Link>
+            <Link href="/animations-demo" className="text-purple-600 hover:underline font-semibold">Animations Demo 🎨</Link>
           </div>
         </div>
       </main>
