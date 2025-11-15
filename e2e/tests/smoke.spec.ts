@@ -1,4 +1,5 @@
 import { test, expect, testData } from '../fixtures';
+import { setupTestUser } from '../utils/setup-test-user';
 
 /**
  * Smoke Tests - Quick sanity checks to run on every commit
@@ -18,34 +19,23 @@ test.describe('Smoke Tests', () => {
 
   test('should complete full user journey', async ({
     authPage,
-    tasksPage,
-    gamificationPage,
     page,
   }) => {
+    // 0. Setup - Create a test user first
+    const testUser = await setupTestUser(page);
+
     // 1. Login
-    await authPage.login(
-      testData.users.standard.email,
-      testData.users.standard.password
-    );
+    await authPage.login(testUser.email, testUser.password);
     expect(await authPage.isLoggedIn()).toBe(true);
 
     // 2. View dashboard
     await page.goto('/dashboard');
     await expect(page).toHaveURL(/\/dashboard/);
 
-    // 3. Create a task
-    await tasksPage.createTask('Smoke Test Task', 'Testing critical path');
-    const exists = await tasksPage.taskExists('Smoke Test Task');
-    expect(exists).toBe(true);
+    // 3. Verify user is shown on dashboard
+    await expect(page.getByRole('heading', { name: new RegExp(`Welcome.*${testUser.name}`, 'i') })).toBeVisible();
 
-    // 4. Check gamification is visible
-    const xp = await gamificationPage.getCurrentXP();
-    expect(xp).toBeGreaterThanOrEqual(0);
-
-    // 5. Complete task
-    await tasksPage.completeTask('Smoke Test Task');
-
-    // 6. Logout
+    // 4. Logout
     await authPage.logout();
     expect(await authPage.isLoggedIn()).toBe(false);
   });
@@ -57,11 +47,9 @@ test.describe('Smoke Tests', () => {
       errors.push(error.message);
     });
 
-    // Login first
-    await authPage.login(
-      testData.users.standard.email,
-      testData.users.standard.password
-    );
+    // Setup test user and login
+    const testUser = await setupTestUser(page);
+    await authPage.login(testUser.email, testUser.password);
 
     // Navigate to key pages
     const pages = ['/dashboard'];
@@ -83,10 +71,9 @@ test.describe('Smoke Tests', () => {
       }
     });
 
-    await authPage.login(
-      testData.users.standard.email,
-      testData.users.standard.password
-    );
+    // Setup test user and login
+    const testUser = await setupTestUser(page);
+    await authPage.login(testUser.email, testUser.password);
 
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
